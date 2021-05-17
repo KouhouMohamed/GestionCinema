@@ -2,6 +2,7 @@ package com.kouhou.jee.entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
@@ -29,4 +30,10 @@ public class Ticket {
 	private int codePayement;
 	
 	private boolean reservee;
+	
+	@ManyToOne
+	private Place place;
+	
+	@ManyToOne
+	private Projection projection;
 }

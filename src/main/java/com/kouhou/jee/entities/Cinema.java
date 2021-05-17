@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -14,7 +14,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @Data
@@ -42,5 +41,6 @@ public class Cinema {
 	@ManyToOne
 	private Ville ville;
 	
+	@OneToMany(mappedBy = "cinema")
 	private List<Salle> salles;
 }

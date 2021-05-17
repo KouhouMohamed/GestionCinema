@@ -1,9 +1,12 @@
 package com.kouhou.jee.entities;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,4 +32,15 @@ public class Projection {
 	private Date dateProjection;
 	
 	private double prix;
+	
+	@ManyToOne
+	private Film film;
+	
+	@ManyToOne
+	private Salle salle;
+	
+	@OneToMany(mappedBy = "projection")
+	private List<Ticket> tickets;
+	
+	private Seance seance;
 }

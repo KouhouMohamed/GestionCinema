@@ -1,10 +1,13 @@
 package com.kouhou.jee.entities;
 
+import java.util.List;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,4 +31,10 @@ public class Place {
 	private double longitude;
 	
 	private double altitude;
+	
+	@ManyToOne
+	private Salle salle;
+	
+	@OneToMany(mappedBy = "place")
+	private List<Ticket> tickets;
 }
