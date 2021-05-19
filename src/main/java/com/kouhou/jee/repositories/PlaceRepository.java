@@ -1,12 +1,13 @@
 package com.kouhou.jee.repositories;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.kouhou.jee.entities.Place;
 
-public interface PlaceRepository {
-
-	public Place findById(Long id);
+@Repository
+public interface PlaceRepository extends JpaRepository<Place, Long>{
 	
 	public Place findByNumero(int numero);
 	

@@ -7,9 +7,9 @@ import com.kouhou.jee.entities.Projection;
 
 public interface ProjectionService {
 
-	public List<Projection> findByPrice(double prix);
+	public List<Projection> findByPrice(double prix, int page, int size);
 	
-	public List<Projection> findBydate(Date date);
+	public List<Projection> findBydate(Date date, int page, int size);
 	
 	public Projection updateProjection(Long id, Projection projection);
 	

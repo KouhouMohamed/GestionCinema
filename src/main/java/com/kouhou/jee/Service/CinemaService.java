@@ -12,7 +12,7 @@ public interface CinemaService {
 	
 	public List<Cinema> findByVille(String nameVille, int page, int limit);
 	
-	public List<Cinema> findByNombrePlace(int nombrePlace, int page, int limit);
+	public List<Cinema> findByNombreSalles(int nombreSalles, int page, int limit);
 	
 	public Cinema updateCinema(Long id, Cinema cinema);
 	

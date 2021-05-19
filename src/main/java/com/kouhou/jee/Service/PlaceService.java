@@ -4,7 +4,7 @@ import com.kouhou.jee.entities.Place;
 
 public interface PlaceService {
 
-	public Place findPlace(int numero);
+	public Place findPlace(Long id);
 	
 	public Place findByPosition(double atitude, double longitude, double altitude);
 	

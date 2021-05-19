@@ -12,5 +12,7 @@ public interface SalleService {
 	
 	public Salle upadateSalle(Long numero, Salle salle);
 	
-	public void deleteSalle(int numero);
+	public void deleteSalle(Long id);
+
+	public List<Salle> findByCinema(Long idCinema, int page, int limit);
 }
