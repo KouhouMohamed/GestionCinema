@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,6 @@ public class CinemaServiceImpl implements CinemaService {
 	@Autowired
 	SalleRepository salleRepository;
 	
-	@Autowired
-	SalleService salleService;
 	
 	@Override
 	public Cinema findCinema(String nom) {
@@ -94,11 +94,31 @@ public class CinemaServiceImpl implements CinemaService {
 			throw new EntityNotFoundException("No cinema with id "+id+" founded");
 		else {
 			List<Salle> salles = salleRepository.findByCinema(id);
-			for(Salle s : salles) {
-				salleService.deleteSalle(s.getId());        
-			}
+			for(Salle s : salles)
+				salleRepository.delete(s);
 
 			cinemaRepository.delete(cinema.get()); 
+		}
+	}
+
+	@Override
+	public List<Cinema> findAll(int page, int limit) {
+		Pageable pageable = PageRequest.of(page,limit);
+		Page<Cinema> cinemas = cinemaRepository.findAll(pageable);
+		if(cinemas == null)
+			return new ArrayList<Cinema>();
+		else
+			return cinemas.toList();
+	}
+
+	@Override
+	public Cinema addCinema(Cinema cinema) {
+		Cinema cinemaR = cinemaRepository.findByNom(cinema.getNom());
+		if(cinemaR.getLongitude() == cinema.getLongitude() && cinemaR.getAltitude()==cinema.getAltitude() && cinemaR.getAtitude()==cinema.getAtitude()) 
+			throw new EntityExistsException("A cinema in the same position aready exist change position an d try again");
+		else {
+			cinemaRepository.save(cinema);
+			return cinema;
 		}
 	}
 

@@ -7,7 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.kouhou.jee.entities.Categorie;
 import com.kouhou.jee.entities.Film;
+import com.kouhou.jee.repositories.CategorieRepository;
 import com.kouhou.jee.repositories.FilmRepository;
 
 @SpringBootApplication
@@ -15,6 +17,9 @@ public class ProjectJeeApplication implements CommandLineRunner {
 
 	@Autowired
 	private FilmRepository filmRepository;
+	
+	@Autowired
+	CategorieRepository categorieRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectJeeApplication.class, args);
 	}
@@ -22,6 +27,8 @@ public class ProjectJeeApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		filmRepository.save(new Film(null,"Baba ALi",1.5,"Ahmed Ntama","Amazigh film","photo.jpg",new Date(),null,null));
+		categorieRepository.save(new Categorie(null, "comedy",null));
+		categorieRepository.save(new Categorie(null, "drama",null));
 	}
 
 }

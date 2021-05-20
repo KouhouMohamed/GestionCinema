@@ -17,5 +17,9 @@ public interface FilmService {
 	
 	public List<Film> findByDate(Date dateSortie, int page, int limit);
 	
+	public Film addFilm(Film film);
+	
+	public Film updateFilm(Long id, Film film);
+	
 	public void deleteFilm(Long id);
 }

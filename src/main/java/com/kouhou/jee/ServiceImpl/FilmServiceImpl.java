@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
@@ -82,6 +83,40 @@ public class FilmServiceImpl implements FilmService {
 		else
 			filmRepository.delete(film.get());
 
+	}
+
+	@Override
+	public Film addFilm(Film film) {
+		boolean exist = false;
+		List<Film> films = filmRepository.findAllByTitre(film.getTitre());
+		if(films == null || films.size() == 0)
+			filmRepository.save(film);
+		else {
+			for(Film f : films) {
+				if(film.equal(f)) {
+					exist =true;
+					break;
+				}
+			}
+			if(!exist)
+				filmRepository.save(film);
+			else
+				throw new EntityExistsException("Film aready exits");
+		}
+		return film;
+	}
+
+	@Override
+	public Film updateFilm(Long id, Film film) {
+		Optional<Film> filmR = filmRepository.findById(id);
+		if(filmR == null)
+			throw new EntityNotFoundException("No film with id "+id+" is founded");
+		else {
+			film.setId(id);
+			filmRepository.save(film);
+		}
+			
+		return null;
 	}
 
 }

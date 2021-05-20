@@ -1,11 +1,14 @@
 package com.kouhou.jee.ServiceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.kouhou.jee.Service.PlaceService;
@@ -57,6 +60,32 @@ public class PlaceServiceImpl implements PlaceService{
 		else
 			placeRepository.delete(place.get());
 		
+	}
+
+	@Override
+	public List<Place> findAll(int page, int limit) {
+		List<Place> places = placeRepository.findAll();
+		if(places == null)
+			return new ArrayList<Place>();
+		else
+			return places;
+	}
+
+	@Override
+	public Place addPlace(Place place) {
+		List<Place> places = placeRepository.findBySalle(place.getSalle().getId());
+		boolean exist = false;
+		if(places!=null && places.size()!=0) {
+			for(Place p : places) {
+				if(p.getNumero()==place.getNumero()) {
+					exist = true;
+					break;
+				}
+			}
+		}
+		if(!exist)
+			placeRepository.save(place);
+		return place;
 	}
 
 }

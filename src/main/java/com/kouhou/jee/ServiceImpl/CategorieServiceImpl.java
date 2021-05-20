@@ -37,9 +37,9 @@ public class CategorieServiceImpl implements CategorieService{
 		if(cat == null)
 			throw new EntityNotFoundException("No Category with name "+name+" not found");
 		else {
-			cat.setName(categorie.getName());
-			categorieRepository.save(cat);
-			return cat;
+			categorie.setId(cat.getId());
+			categorieRepository.save(categorie);
+			return categorie;
 		}
 		
 	}
@@ -50,8 +50,8 @@ public class CategorieServiceImpl implements CategorieService{
 		if(cat != null)
 			throw new EntityExistsException("a category with name "+categorie.getName()+" already exist");
 		else {
-			categorieRepository.save(cat);
-			return cat;
+			categorieRepository.save(categorie);
+			return categorie;
 		}
 	}
 

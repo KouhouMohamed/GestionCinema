@@ -14,6 +14,10 @@ public interface CinemaService {
 	
 	public List<Cinema> findByNombreSalles(int nombreSalles, int page, int limit);
 	
+	public List<Cinema> findAll(int page, int limit);
+
+	public Cinema addCinema(Cinema cinema);
+	
 	public Cinema updateCinema(Long id, Cinema cinema);
 	
 	public void deleteCinema(Long id);

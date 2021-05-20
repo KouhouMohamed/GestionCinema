@@ -15,10 +15,10 @@ public interface SalleRepository extends JpaRepository<Salle, Long>{
 	
 	public Salle findByNom(String nom);
 	
-	@Query(value = "select * from salle s where s.cinema_id=:idCinema")
+	@Query(value = "select * from salle s where s.cinema_id=:idCinema",nativeQuery = true)
 	public Page<Salle> findByCinema(Long idCinema, Pageable pageable);
 	
-	@Query(value = "select * from salle s where s.cinema_id=:idCinema")
+	@Query(value = "select * from salle s where s.cinema_id=:idCinema",nativeQuery = true)
 	public List<Salle> findByCinema(Long idCinema);
 	
 	

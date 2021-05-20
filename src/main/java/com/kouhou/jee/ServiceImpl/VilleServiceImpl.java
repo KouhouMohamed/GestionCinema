@@ -47,7 +47,9 @@ Optional<Ville> villeR =  villeRepository.findById(id);
 		}
 			
 	}
-
+/*
+ * By delete ville we delete cinemas
+ * */
 	@Override
 	public void deleteVille(Long id) {
 		Optional<Ville> ville =  villeRepository.findById(id);

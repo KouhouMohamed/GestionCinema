@@ -1,5 +1,6 @@
 package com.kouhou.jee.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @Entity
-public class Film {
+public class Film implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,4 +67,8 @@ public class Film {
 	@Column(nullable = true)
 	@OneToMany(mappedBy = "film")
 	private List<Projection> projections;
+	
+	public boolean equal(Film film) {
+		return (this.titre.equals(film.getTitre())&&this.duree==film.getDuree()&&this.realisateur.equals(film.getRealisateur())&&this.dateSortie.equals(film.getDateSortie())&&this.description.equals(film.getDescription()));
+	}
 }

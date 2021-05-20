@@ -1,7 +1,9 @@
 package com.kouhou.jee.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +22,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Categorie {
+public class Categorie implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +36,7 @@ public class Categorie {
 	@Size(max = 15, min = 3)
 	private String name;
 	
+	@Column(nullable = true)
 	@OneToMany(mappedBy = "categorie")
 	private List<Film> films;
 }

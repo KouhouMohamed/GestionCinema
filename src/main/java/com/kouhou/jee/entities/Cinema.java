@@ -1,5 +1,6 @@
 package com.kouhou.jee.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -24,7 +25,12 @@ import javax.validation.constraints.Size;
 
 @Table
 @Entity
-public class Cinema {
+public class Cinema implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

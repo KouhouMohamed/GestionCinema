@@ -1,6 +1,7 @@
 package com.kouhou.jee.repositories;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,9 @@ public interface FilmRepository extends JpaRepository<Film, Long>{
 	public Page<Film> findByRealisateur(String realisateur,Pageable pageable);
 	
 	public Page<Film> findByDuree(double duree,Pageable pageable);
+	
+	@Query(value = "select * from film f where f.titre:=titre",nativeQuery = true)
+	public List<Film> findAllByTitre(String titre);
 	
 	public Page<Film> findByDateSortie(Date dateSortie,Pageable pageable);
 	

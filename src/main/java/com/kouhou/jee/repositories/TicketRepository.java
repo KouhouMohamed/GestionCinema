@@ -16,7 +16,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long>{
 	
 	public Page<Ticket> findByReservee(boolean reservee, Pageable pageable);
 	
-	public Page<Ticket> findByPrix(double prix);
+	public Page<Ticket> findByPrix(double prix, Pageable pageable);
 	
 	
 	
