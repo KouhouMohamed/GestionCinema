@@ -8,7 +8,7 @@ public interface VilleService {
 	
 	public Ville findByPosition(double atitude, double longitude, double altitude);
 
-	public Ville updateVille(String name, Ville ville);
+	public Ville updateVille(Long id, Ville ville);
 	
-	public void deleteVille(String nom);
+	public void deleteVille(Long id);
 }

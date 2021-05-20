@@ -8,7 +8,7 @@ public interface TicketService {
 
 	public Ticket findTicket(String nomClient);
 	
-	public List<Ticket> findReservedTicket(boolean reservee);
+	public List<Ticket> findReservedTicket(boolean reservee, int page, int limit);
 	
 	public Ticket updateTicket(Long id, Ticket ticket);
 	
