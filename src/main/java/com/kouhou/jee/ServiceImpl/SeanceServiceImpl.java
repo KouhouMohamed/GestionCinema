@@ -1,5 +1,6 @@
 package com.kouhou.jee.ServiceImpl;
 
+import java.rmi.server.ServerNotActiveException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,25 @@ public class SeanceServiceImpl implements SeanceService {
 			throw new EntityNotFoundException("Seance not found");
 		else
 			seanceRepository.delete(seanceR.get());
+	}
+
+	@Override
+	public Seance findSeance(Long id) {
+		Optional<Seance> seance = seanceRepository.findById(id);
+		if(seance ==null)
+			throw new EntityNotFoundException("No seance with id "+id+" is founded");
+		else
+			return seance.get();
+	}
+
+	@Override
+	public List<Seance> findAll(int page, int limit) {
+		Pageable pageable = PageRequest.of(page, limit);
+		Page<Seance> seances = seanceRepository.findAll(pageable);
+		if(seances == null)
+			return new ArrayList<Seance>();
+		else
+			return seances.toList();
 	}
 
 }

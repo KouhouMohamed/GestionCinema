@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,27 @@ public class TicketServiceimpl implements TicketService {
 			throw new EntityNotFoundException("No ticket with id "+id+" is founded");
 		else
 			ticketRepository.delete(ticket.get());
+	}
+
+	@Override
+	public List<Ticket> findAll(int page, int limit) {
+		Pageable pageable =  PageRequest.of(page, limit);
+		Page<Ticket> tickets = ticketRepository.findAll(pageable);
+		if(tickets==null)
+			return new ArrayList<Ticket>();
+		else
+			return tickets.toList();
+	}
+
+	@Override
+	public Ticket addTicket(Ticket ticket) {
+		Ticket t = ticketRepository.findByNomClient(ticket.getNomClient());
+		if(t==null)
+			throw  new EntityExistsException();
+		else {
+			ticketRepository.save(ticket);
+			return ticket;
+		}
 	}
 
 }

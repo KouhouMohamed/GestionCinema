@@ -10,7 +10,11 @@ public interface TicketService {
 	
 	public List<Ticket> findReservedTicket(boolean reservee, int page, int limit);
 	
+	public List<Ticket> findAll(int page, int limit);
+	
 	public Ticket updateTicket(Long id, Ticket ticket);
+	
+	public Ticket addTicket(Ticket ticket);
 	
 	public void deleteTicket(Long id);
 }

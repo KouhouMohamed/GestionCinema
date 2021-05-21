@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,12 @@ public class SalleServiceImpl implements SalleService {
 	SalleRepository salleRepository;
 	
 	@Override
-	public Salle findSalle(String name) {
-		Salle salle = salleRepository.findByNom(name);
+	public Salle findSalle(Long id) {
+		Optional<Salle> salle = salleRepository.findById(id);
 		if(salle == null)
-			throw new EntityNotFoundException("No salle with name "+name+" is founded");
+			throw new EntityNotFoundException("No salle with id "+id+" is founded");
 		else
-			return salle;
+			return salle.get();
 	}
 
 	@Override
@@ -69,6 +70,32 @@ public class SalleServiceImpl implements SalleService {
 			return new ArrayList<Salle>();
 		else
 			return salles.toList();
+	}
+
+	@Override
+	public Salle addSalle(Salle salle) {
+		List<Salle> salles = salleRepository.findByCinema(salle.getCinema().getId());
+		boolean exist = false;
+		for(Salle s : salles) {
+			if(s.getNom().equals(salle.getNom())) {
+				exist =true;
+				break;
+			}
+		}
+		if (exist)
+			throw new EntityExistsException();
+		else {
+			salleRepository.save(salle);
+			return salle;
+		}
+			
+	}
+
+	@Override
+	public List<Salle> findAll(int page, int limit) {
+		Pageable pageable = PageRequest.of(page,limit);
+		Page<Salle> salles = salleRepository.findAll(pageable);
+		return (salles==null)?new ArrayList<Salle>():salles.toList();
 	}
 
 }
