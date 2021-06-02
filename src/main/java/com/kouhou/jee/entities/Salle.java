@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 
+import com.kouhou.jee.response.SalleResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,4 +49,11 @@ public class Salle implements Serializable{
 
 	@OneToMany(mappedBy = "salle")
 	private List<Projection> projections;
+	
+	public SalleResponse map() {
+		SalleResponse salle = new SalleResponse(id, nom, nombrePlaces, cinema.getNom());
+		for(Place place : places)
+			salle.getPlaces().add(place.map());
+		return salle;
+	}
 }

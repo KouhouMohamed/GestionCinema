@@ -7,6 +7,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 
+import com.kouhou.jee.response.TicketResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,4 +49,9 @@ public class Ticket implements Serializable{
 	
 	@ManyToOne
 	private Projection projection;
+
+	public TicketResponse map() {
+		TicketResponse ticket = new TicketResponse(id, nomClient, prix, codePayement, reservee, place.getNumero(), projection.getId());
+		return ticket;
+	}
 }

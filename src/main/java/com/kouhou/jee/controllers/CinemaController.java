@@ -1,5 +1,6 @@
 package com.kouhou.jee.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kouhou.jee.Service.CinemaService;
 import com.kouhou.jee.entities.Cinema;
+import com.kouhou.jee.response.CinemaResponse;
 
 @RestController
 @RequestMapping("/cinema")
@@ -26,45 +28,54 @@ public class CinemaController {
 	CinemaService cinemaService;
 	
 	@GetMapping(path = "/{name}",produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Cinema> getCinema(String name){
+	public ResponseEntity<CinemaResponse> getCinema(String name){
 		Cinema cinema = cinemaService.findCinema(name);
-		return new ResponseEntity<Cinema>(cinema,HttpStatus.OK);
+		return new ResponseEntity<CinemaResponse>(cinema.map(),HttpStatus.OK);
 	}
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<Cinema>> getByVille(@RequestParam String name, @RequestParam int page, @RequestParam int limit){
+	@GetMapping(path="/ville/{name}",produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<List<CinemaResponse>> getByVille(@PathVariable String name, @RequestParam int page, @RequestParam int limit){
 		List<Cinema> cinemas =  cinemaService.findByVille(name, page, limit);
-		return new ResponseEntity<List<Cinema>>(cinemas,HttpStatus.OK);
+		List<CinemaResponse> cinemaRs = new ArrayList<CinemaResponse>();
+		for(Cinema cinema : cinemas)
+			cinemaRs.add(cinema.map());
+		return new ResponseEntity<List<CinemaResponse>>(cinemaRs,HttpStatus.OK);
 	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<List<Cinema>> getByNombreSalle(@RequestParam int nombreSalle, @RequestParam int page, @RequestParam int limit){
+	public ResponseEntity<List<CinemaResponse>> getByNombreSalle(@RequestParam int nombreSalle, @RequestParam int page, @RequestParam int limit){
 		List<Cinema> cinemas =  cinemaService.findByNombreSalles(nombreSalle, page, limit);
-		return new ResponseEntity<List<Cinema>>(cinemas,HttpStatus.OK);
+		List<CinemaResponse> cinemaRs = new ArrayList<CinemaResponse>();
+		for(Cinema cinema : cinemas)
+			cinemaRs.add(cinema.map());
+		return new ResponseEntity<List<CinemaResponse>>(cinemaRs,HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/all",produces = {MediaType.APPLICATION_JSON_VALUE} )
-	public ResponseEntity<List<Cinema>> getAll(@RequestParam int page, @RequestParam int limit){
+	public ResponseEntity<List<CinemaResponse>> getAll(@RequestParam int page, @RequestParam int limit){
 		List<Cinema> cinemas =  cinemaService.findAll(page, limit);
-		return new ResponseEntity<List<Cinema>>(cinemas,HttpStatus.OK);
+		List<CinemaResponse> cinemaRs = new ArrayList<CinemaResponse>();
+		for(Cinema cinema : cinemas)
+			cinemaRs.add(cinema.map());
+		return new ResponseEntity<List<CinemaResponse>>(cinemaRs,HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/position",produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Cinema> getByPosition(@RequestParam int atitude,@RequestParam int longitude,@RequestParam int altitude){
+	public ResponseEntity<CinemaResponse> getByPosition(@RequestParam int atitude,@RequestParam int longitude,@RequestParam int altitude){
 		Cinema cinema = cinemaService.findByPosition(atitude, longitude, altitude);
-		return new ResponseEntity<Cinema>(cinema,HttpStatus.OK);
+		return new ResponseEntity<CinemaResponse>(cinema.map(),HttpStatus.OK);
 	}
 	
 	@PostMapping(path="/add",produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Cinema> addCinema(Cinema cinema){
+	public ResponseEntity<CinemaResponse> addCinema(Cinema cinema){
 		Cinema cinemaR = cinemaService.addCinema(cinema);
-		return new ResponseEntity<Cinema>(cinemaR,HttpStatus.ACCEPTED);
+		return new ResponseEntity<CinemaResponse>(cinemaR.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping(path = "/edit/{id}",produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, Cinema cinema) {
+	public ResponseEntity<CinemaResponse> updateCinema(@PathVariable Long id, Cinema cinema) {
 		Cinema cinemaR = cinemaService.updateCinema(id, cinema);
-		return new ResponseEntity<Cinema>(cinemaR,HttpStatus.ACCEPTED);
+		return new ResponseEntity<CinemaResponse>(cinemaR.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping(path = "/delete/{id}")

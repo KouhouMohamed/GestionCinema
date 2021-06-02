@@ -10,7 +10,7 @@ import com.kouhou.jee.entities.Ville;
 public interface VilleRepository extends JpaRepository<Ville, Long>{
 
 	
-	@Query(value="select * from Ville where atitude=:atitude and longitude=:longitude and altiude=:altitude" ,nativeQuery = true)
+	@Query(value="select * from Ville where atitude=:atitude and longitude=:longitude and altitude=:altitude" ,nativeQuery = true)
 	public Ville findByPosition(double atitude, double longitude, double altitude);
 	
 	public Ville findByNom(String nom);

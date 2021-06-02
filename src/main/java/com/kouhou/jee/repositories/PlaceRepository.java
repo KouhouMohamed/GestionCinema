@@ -18,9 +18,9 @@ public interface PlaceRepository extends JpaRepository<Place, Long>{
 	@Query(value="select * from Cinema where atitude=:atitude and longitude=:longitude and altiude=:altitude" ,nativeQuery = true)
 	public Place findByPosition(double atitude, double longitude, double altitude);
 	
-	@Query(value = "select * from place p where p.salle_id := salle_id")
+	@Query(value = "select * from place p where p.salle_id := salle_id",nativeQuery = true)
 	public List<Place> findBySalle(Long salle_id); 
 	
-	@Query(value = "select * from place p where p.salle_id := salle_id")
+	@Query(value = "select * from place p where p.salle_id := salle_id",nativeQuery = true)
 	public Page<Place> findBySalle(Long salle_id,Pageable pageable); 
 }

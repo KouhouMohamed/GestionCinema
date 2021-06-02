@@ -22,4 +22,6 @@ public interface FilmService {
 	public Film updateFilm(Long id, Film film);
 	
 	public void deleteFilm(Long id);
+
+	public List<Film> findAll(int page, int limit);
 }

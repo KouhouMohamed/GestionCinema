@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMin;
 
+import com.kouhou.jee.response.PlaceResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,4 +49,9 @@ public class Place implements Serializable{
 	
 	@OneToMany(mappedBy = "place")
 	private List<Ticket> tickets;
+	
+	public PlaceResponse map() {
+		PlaceResponse place = new PlaceResponse(id, numero, atitude, longitude, altitude, salle.getNom());
+		return place;
+	}
 }

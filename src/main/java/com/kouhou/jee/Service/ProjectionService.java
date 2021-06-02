@@ -18,4 +18,6 @@ public interface ProjectionService {
 	public void deleteProjection(Long id);
 
 	public List<Projection> findProjectionsByDate(Date date, Long id_salle,Long id_film);
+
+	public List<Projection> findAll(int page, int limit);
 }

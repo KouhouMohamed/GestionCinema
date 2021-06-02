@@ -6,16 +6,20 @@ import java.util.Optional;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.kouhou.jee.Service.VilleService;
 import com.kouhou.jee.entities.Ville;
 import com.kouhou.jee.repositories.VilleRepository;
 
+@Service
+@Transactional
 public class VilleServiceImpl implements VilleService{
 
 	@Autowired
@@ -47,7 +51,6 @@ public class VilleServiceImpl implements VilleService{
 			throw new EntityNotFoundException("No ville with id "+id+" is founded");
 		else {
 			ville.setId(id);
-			villeRepository.delete(villeR.get());
 			villeRepository.save(ville);
 			return ville;
 		}

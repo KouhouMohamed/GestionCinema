@@ -1,5 +1,6 @@
 package com.kouhou.jee.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kouhou.jee.Service.VilleService;
 import com.kouhou.jee.entities.Ville;
+import com.kouhou.jee.response.VilleResponse;
 
 @RestController
 @RequestMapping("/ville")
@@ -27,39 +29,43 @@ public class VillerController {
 	VilleService villeService;
 	
 	@GetMapping(path="/{nom}",produces = {MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Ville> getVille(@PathVariable String nom){
+	public ResponseEntity<VilleResponse> getVille(@PathVariable String nom){
 		Ville ville = villeService.findVille(nom);
-		return new ResponseEntity<Ville>(ville,HttpStatus.OK);
+		return new ResponseEntity<VilleResponse>(ville.map(),HttpStatus.OK);
 		
 	}
 	
 	@GetMapping(path="/all",produces = {MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<List<Ville>> getAll(@RequestParam int page, @RequestParam int limit){
+	public ResponseEntity<List<VilleResponse>> getAll(@RequestParam int page, @RequestParam int limit){
 		List<Ville> villes = villeService.findAll(page, limit);
-		return new ResponseEntity<List<Ville>>(villes,HttpStatus.OK);
+		List<VilleResponse> villeRs = new ArrayList<VilleResponse>();
+		for(Ville ville : villes)
+			villeRs.add(ville.map());
+		return new ResponseEntity<List<VilleResponse>>(villeRs,HttpStatus.OK);
 	}
 	
 	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Ville> getByPosition(@RequestParam double atitude, @RequestParam double longitude, @RequestParam double altitude) {
+	public ResponseEntity<VilleResponse> getByPosition(@RequestParam double atitude, @RequestParam double longitude, @RequestParam double altitude) {
 		Ville ville =  villeService.findByPosition(atitude, longitude, altitude);
-		return new ResponseEntity<Ville>(ville,HttpStatus.OK);
+		return new ResponseEntity<VilleResponse>(ville.map(),HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/add",produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Ville> addVille(@RequestBody Ville ville){
+	@PostMapping(path="/add",produces = {MediaType.APPLICATION_JSON_VALUE,"multipart/form-data"},
+			consumes = { MediaType.APPLICATION_JSON_VALUE, "multipart/form-data" })
+	public ResponseEntity<VilleResponse> addVille(@RequestBody Ville ville){
 	Ville villeR = villeService.addVille(ville);
-	return new ResponseEntity<Ville>(ville,HttpStatus.ACCEPTED);
+	return new ResponseEntity<VilleResponse>(ville.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping(path="/edit/{id}",produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<Ville> updateVille(@PathVariable Long id, @RequestBody Ville ville){
+	public ResponseEntity<VilleResponse> updateVille(@PathVariable Long id, @RequestBody Ville ville){
 		Ville villeR = villeService.updateVille(id, ville);
-		return new ResponseEntity<Ville>(villeR,HttpStatus.ACCEPTED);
+		return new ResponseEntity<VilleResponse>(villeR.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping(path="/delete/{id}")
-	public ResponseEntity<Ville> deleteVille(@PathVariable Long id){
+	public ResponseEntity<VilleResponse> deleteVille(@PathVariable Long id){
 		villeService.deleteVille(id);
-		return new ResponseEntity<Ville>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<VilleResponse>(HttpStatus.NO_CONTENT);
 	}
 }

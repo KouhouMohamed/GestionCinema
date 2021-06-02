@@ -18,6 +18,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.kouhou.jee.response.FilmResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -68,6 +70,11 @@ public class Film implements Serializable{
 	@OneToMany(mappedBy = "film")
 	private List<Projection> projections;
 	
+	public FilmResponse map() {
+		FilmResponse filmRes = new FilmResponse(id, description, duree, description, description, description, dateSortie, description);
+		
+		return filmRes;
+	}
 	public boolean equal(Film film) {
 		return (this.titre.equals(film.getTitre())&&this.duree==film.getDuree()&&this.realisateur.equals(film.getRealisateur())&&this.dateSortie.equals(film.getDateSortie())&&this.description.equals(film.getDescription()));
 	}

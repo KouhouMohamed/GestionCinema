@@ -1,6 +1,7 @@
 package com.kouhou.jee.controllers;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kouhou.jee.Service.SalleService;
 import com.kouhou.jee.entities.Salle;
+import com.kouhou.jee.response.SalleResponse;
 
 @RestController
 @RequestMapping("/salle")
@@ -30,54 +32,63 @@ public class SalleController {
 	@GetMapping(path = "/{id}",
 			produces = {MediaType.APPLICATION_JSON_VALUE }
 	)
-	public ResponseEntity<Salle> getSalle(@PathVariable Long id) {
+	public ResponseEntity<SalleResponse> getSalle(@PathVariable Long id) {
 		Salle salle = salleService.findSalle(id);
-		return new ResponseEntity<Salle>(salle,HttpStatus.OK);
+		return new ResponseEntity<SalleResponse>(salle.map(),HttpStatus.OK);
 	}
 	
 	@GetMapping(
 			produces = {MediaType.APPLICATION_JSON_VALUE }
 	)
-	public ResponseEntity<List<Salle>> getByNombrePlace(@RequestParam int nombre,@RequestParam int page,@RequestParam int limit) {
+	public ResponseEntity<List<SalleResponse>> getByNombrePlace(@RequestParam int nombre,@RequestParam int page,@RequestParam int limit) {
 		List<Salle> salles = salleService.findByNombrePlace(nombre, page, limit);
-		return new ResponseEntity<List<Salle>>(salles,HttpStatus.OK);
+		List<SalleResponse> salleRs = new ArrayList<SalleResponse>();
+		for(Salle salle : salles)
+			salleRs.add(salle.map());
+		return new ResponseEntity<List<SalleResponse>>(salleRs,HttpStatus.OK);
 	}
 	
-	@GetMapping(
+	@GetMapping(path = "/cinema/{idCinema}",
 			produces = {MediaType.APPLICATION_JSON_VALUE }
 	)
-	public ResponseEntity<List<Salle>> getByCinema(@RequestParam Long idCinema,@RequestParam int page,@RequestParam int limit) {
+	public ResponseEntity<List<SalleResponse>> getByCinema(@PathVariable Long idCinema,@RequestParam int page,@RequestParam int limit) {
 		List<Salle> salles = salleService.findByCinema(idCinema, page, limit);
-		return new ResponseEntity<List<Salle>>(salles,HttpStatus.OK);
+		List<SalleResponse> salleRs = new ArrayList<SalleResponse>();
+		for(Salle salle : salles)
+			salleRs.add(salle.map());
+		return new ResponseEntity<List<SalleResponse>>(salleRs,HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/all",
 			produces = {MediaType.APPLICATION_JSON_VALUE }
 	)
-	public ResponseEntity<List<Salle>> getAll(@RequestParam int page,@RequestParam int limit) {
+	public ResponseEntity<List<SalleResponse>> getAll(@RequestParam int page,@RequestParam int limit) {
 		List<Salle> salles = salleService.findAll(page, limit);
-		return new ResponseEntity<List<Salle>>(salles,HttpStatus.OK);
+		List<SalleResponse> salleRs = new ArrayList<SalleResponse>();
+		for(Salle salle : salles)
+			salleRs.add(salle.map());
+		return new ResponseEntity<List<SalleResponse>>(salleRs,HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/add",
 			produces = {MediaType.APPLICATION_JSON_VALUE }
 	)
-	public ResponseEntity<Salle> addSalle(@RequestBody Salle salle){
+	public ResponseEntity<SalleResponse> addSalle(@RequestBody Salle salle){
 		Salle salleR = salleService.addSalle(salle);
-		return new ResponseEntity<Salle>(salleR,HttpStatus.ACCEPTED);
+		return new ResponseEntity<SalleResponse>(salleR.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping(path="/edit/{numero}",
 			produces = {MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Salle> updateSalle(@PathVariable Long numero,@RequestBody Salle salle){
+	public ResponseEntity<SalleResponse> updateSalle(@PathVariable Long numero,@RequestBody Salle salle){
 		Salle salleR= salleService.upadateSalle(numero, salle);
-		return new ResponseEntity<Salle>(salleR,HttpStatus.ACCEPTED);
+		return new ResponseEntity<SalleResponse>(salleR.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping(path="/delete/{id}")
-	public ResponseEntity<Salle> deleteSalle(@PathVariable Long id){
+	public ResponseEntity<SalleResponse> deleteSalle(@PathVariable Long id){
 		salleService.deleteSalle(id);
-		return new ResponseEntity<Salle>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<SalleResponse>(HttpStatus.NO_CONTENT);
 	}
 	
 }

@@ -16,6 +16,8 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.kouhou.jee.response.ProjectionResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,6 +53,10 @@ public class Projection implements Serializable{
 	@OneToMany(mappedBy = "projection")
 	private List<Ticket> tickets;
 	
-	
+	public ProjectionResponse map() {
+		
+		ProjectionResponse projection = new ProjectionResponse(id, dateProjection, prix, film.getTitre(), salle.getNom());
+		return projection;
+	}
 	//private Seance seance;
 }

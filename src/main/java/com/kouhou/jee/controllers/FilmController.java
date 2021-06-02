@@ -1,5 +1,6 @@
 package com.kouhou.jee.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kouhou.jee.Service.FilmService;
 import com.kouhou.jee.entities.Film;
+import com.kouhou.jee.response.FilmResponse;
 
 @RestController
 @RequestMapping("/film")
@@ -30,49 +32,77 @@ public class FilmController {
 	
 	@GetMapping(path="/{id}",produces = {MediaType.APPLICATION_JSON_VALUE }
 			)
-	public ResponseEntity<Film> getFilm(@PathVariable Long id){
+	public ResponseEntity<FilmResponse> getFilm(@PathVariable Long id){
 		Film film = filmService.findFilm(id);
-		return new ResponseEntity<Film>(film,HttpStatus.OK);
+		FilmResponse filmResp = film.map();
+		return new ResponseEntity<FilmResponse>(filmResp,HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/{titre}",produces = {MediaType.APPLICATION_JSON_VALUE }
 			)
-	public ResponseEntity<List<Film>> getByTitre(@PathVariable String titre, int page, int limit){
+	public ResponseEntity<List<FilmResponse>> getByTitre(@PathVariable String titre, int page, int limit){
 		List<Film> films = filmService.findByTitel(titre, page, limit);
-		return new ResponseEntity<List<Film>>(films,HttpStatus.OK);
+		List<FilmResponse> filmResps = new ArrayList<FilmResponse>();
+		for(Film film : films) {
+			filmResps.add(film.map());
+		}
+		return new ResponseEntity<List<FilmResponse>>(filmResps,HttpStatus.OK);
 	}
 	
 	@GetMapping(path="/{realisateur}",produces = {MediaType.APPLICATION_JSON_VALUE }
 			)
-	public ResponseEntity<List<Film>> getByRealisateur(@PathVariable String realisateur, int page, int limit){
+	public ResponseEntity<List<FilmResponse>> getByRealisateur(@PathVariable String realisateur, int page, int limit){
 		List<Film> films = filmService.findByRealisateur(realisateur, page, limit);
-		return new ResponseEntity<List<Film>>(films,HttpStatus.OK);
+		List<FilmResponse> filmResps = new ArrayList<FilmResponse>();
+		for(Film film : films) {
+			filmResps.add(film.map());
+		}
+		return new ResponseEntity<List<FilmResponse>>(filmResps,HttpStatus.OK);
 	}
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE }
+	@GetMapping(path="/duree",produces = {MediaType.APPLICATION_JSON_VALUE }
 			)
-	public ResponseEntity<List<Film>> getByDuree(@RequestParam double duree, int page, int limit){
+	public ResponseEntity<List<FilmResponse>> getByDuree(@RequestParam double duree, int page, int limit){
 		List<Film> films = filmService.findByDuree(duree, page, limit);
-		return new ResponseEntity<List<Film>>(films,HttpStatus.OK);
+		List<FilmResponse> filmResps = new ArrayList<FilmResponse>();
+		for(Film film : films) {
+			filmResps.add(film.map());
+		}
+		return new ResponseEntity<List<FilmResponse>>(filmResps,HttpStatus.OK);
 	}
 	
-	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE }
+	@GetMapping(path="/{dateSortie}",produces = {MediaType.APPLICATION_JSON_VALUE }
 			)
-	public ResponseEntity<List<Film>> getByDate(@RequestParam Date dateSortie, int page, int limit){
+	public ResponseEntity<List<FilmResponse>> getByDate(@PathVariable Date dateSortie, int page, int limit){
 		List<Film> films = filmService.findByDate(dateSortie, page, limit);
-		return new ResponseEntity<List<Film>>(films,HttpStatus.OK);
+		List<FilmResponse> filmResps = new ArrayList<FilmResponse>();
+		for(Film film : films) {
+			filmResps.add(film.map());
+		}
+		return new ResponseEntity<List<FilmResponse>>(filmResps,HttpStatus.OK);
 	}
-	
+	@GetMapping(path="/all",produces = {MediaType.APPLICATION_JSON_VALUE }
+			)
+	public ResponseEntity<List<FilmResponse>> getAll(int page, int limit){
+		List<Film> films = filmService.findAll(page, limit);
+		List<FilmResponse> filmResps = new ArrayList<FilmResponse>();
+		for(Film film : films) {
+			filmResps.add(film.map());
+		}
+		return new ResponseEntity<List<FilmResponse>>(filmResps,HttpStatus.OK);
+	}
 	@PutMapping(path = "/edit/{id}",produces = {MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Film> updateFilm(@PathVariable Long id, Film film){
+	public ResponseEntity<FilmResponse> updateFilm(@PathVariable Long id, Film film){
 		Film filmR = filmService.updateFilm(id, film);
-		return new ResponseEntity<Film>(filmR,HttpStatus.OK);
+		FilmResponse filmResp = filmR.map();
+		return new ResponseEntity<FilmResponse>(filmResp,HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/add",produces = {MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<Film> addFilm(@RequestBody Film film){
+	public ResponseEntity<FilmResponse> addFilm(@RequestBody Film film){
 		Film filmR = filmService.addFilm(film);
-		return	new ResponseEntity<Film>(filmR,HttpStatus.ACCEPTED);
+		FilmResponse filmResp = filmR.map();
+		return new ResponseEntity<FilmResponse>(filmResp,HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping(path="/delete/{id}")
