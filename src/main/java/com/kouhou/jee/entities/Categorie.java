@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.kouhou.jee.response.CategorieResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,4 +41,9 @@ public class Categorie implements Serializable{
 	@Column(nullable = true)
 	@OneToMany(mappedBy = "categorie")
 	private List<Film> films;
+	
+	public CategorieResponse map() {
+		CategorieResponse cat = new CategorieResponse(id,name);
+		return cat;
+	}
 }

@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.kouhou.jee.response.VilleResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,4 +44,11 @@ public class Ville implements Serializable{
 	
 	@OneToMany(mappedBy = "ville")
 	private List<Cinema> cinemas;
+	
+	public VilleResponse map() {
+		VilleResponse ville = new VilleResponse(id, nom, atitude, longitude, altitude);
+		for(Cinema cinema : cinemas)
+			ville.getCinemas().add(cinema.getNom());
+		return ville;
+	}
 }

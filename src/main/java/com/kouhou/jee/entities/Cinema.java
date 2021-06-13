@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 
+import com.kouhou.jee.response.CinemaResponse;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -53,4 +55,11 @@ public class Cinema implements Serializable{
 	
 	@OneToMany(mappedBy = "cinema")
 	private List<Salle> salles;
+	
+	public CinemaResponse map() {
+		CinemaResponse cinema = new CinemaResponse(id, nom,atitude,longitude,altitude,nombreSalles,ville.getNom());
+		for(Salle salle : salles)
+			cinema.getSalles().add(salle.map());
+		return cinema;
+	}
 }

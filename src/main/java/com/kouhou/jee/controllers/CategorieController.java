@@ -1,5 +1,6 @@
 package com.kouhou.jee.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kouhou.jee.Service.CategorieService;
 import com.kouhou.jee.entities.Categorie;
+import com.kouhou.jee.response.CategorieResponse;
 
 @RestController
 @RequestMapping("/categorie")
@@ -30,10 +32,10 @@ public class CategorieController {
 			path = "/{name}", 
 			produces = {MediaType.APPLICATION_JSON_VALUE }
 			)
-	public ResponseEntity<Categorie> getCategorie(@PathVariable String name){
+	public ResponseEntity<CategorieResponse> getCategorie(@PathVariable String name){
 		Categorie categorie = catService.findCategorie(name);
 		ModelMapper modelMapper = new ModelMapper();
-		return new ResponseEntity<>(modelMapper.map(categorie,Categorie.class),HttpStatus.OK);
+		return new ResponseEntity<>(modelMapper.map(categorie.map(),CategorieResponse.class),HttpStatus.OK);
 	}
 	
 	@GetMapping(
@@ -41,10 +43,12 @@ public class CategorieController {
 			produces = { 
 					MediaType.APPLICATION_JSON_VALUE 
 					})
-	public ResponseEntity<List<Categorie>> getCategories(@RequestParam int page,@RequestParam int limit){
+	public ResponseEntity<List<CategorieResponse>> getCategories(@RequestParam int page,@RequestParam int limit){
 		List<Categorie> cats = catService.findAllCategories(page, limit);
-		
-		return new ResponseEntity<List<Categorie>>(cats,HttpStatus.OK);
+		List<CategorieResponse> catRs = new ArrayList<CategorieResponse>();
+		for(Categorie cat : cats)
+			catRs.add(cat.map());
+		return new ResponseEntity<List<CategorieResponse>>(catRs,HttpStatus.OK);
 		
 	}
 	@PostMapping(
@@ -52,18 +56,18 @@ public class CategorieController {
 			produces = { 
 					MediaType.APPLICATION_JSON_VALUE 
 					})
-	public ResponseEntity<Categorie> addCategorie(Categorie cat){
+	public ResponseEntity<CategorieResponse> addCategorie(Categorie cat){
 		Categorie categorie = catService.addCategorie(cat);
-		return new ResponseEntity<>(cat,HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(categorie.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@PutMapping(path="/edit/{name}",
 			produces = { 
 			MediaType.APPLICATION_JSON_VALUE 
 			})
-	public ResponseEntity<Categorie> updateCategorie(@PathVariable String name, Categorie cat) {
+	public ResponseEntity<CategorieResponse> updateCategorie(@PathVariable String name, Categorie cat) {
 		Categorie categorie = catService.updateCategorie(name, cat);
-;		return new ResponseEntity<Categorie>(categorie,HttpStatus.ACCEPTED);
+;		return new ResponseEntity<CategorieResponse>(categorie.map(),HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping(path="/delete/{name}")

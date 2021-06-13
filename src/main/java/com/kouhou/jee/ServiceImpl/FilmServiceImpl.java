@@ -1,5 +1,6 @@
 package com.kouhou.jee.ServiceImpl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -117,6 +118,13 @@ public class FilmServiceImpl implements FilmService {
 		}
 			
 		return null;
+	}
+
+	@Override
+	public List<Film> findAll(int page, int limit) {
+		Pageable pageable = PageRequest.of(page, limit);
+		Page<Film> films = filmRepository.findAll(pageable);
+		return (films==null)?new ArrayList<Film>():films.toList();
 	}
 
 }

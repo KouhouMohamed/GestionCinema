@@ -39,7 +39,7 @@ public class SeanceController {
 		return new ResponseEntity<List<Seance>>(seances,HttpStatus.OK);
 	}
 	
-	@GetMapping(path="/all",produces = {MediaType.APPLICATION_JSON_VALUE })
+	@GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<List<Seance>> getByDate(@RequestParam Date date,@RequestParam int page, @RequestParam int limit){
 		List<Seance> seances = seanceService.findByDate(date,page,limit);
 		return new ResponseEntity<List<Seance>>(seances,HttpStatus.OK);
