@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.kouhou.jee.Service;
 
 import java.util.Date;
@@ -22,28 +21,3 @@ public interface ProjectionService {
 
 	public List<Projection> findAll(int page, int limit);
 }
-=======
-package com.kouhou.jee.Service;
-
-import java.util.Date;
-import java.util.List;
-
-import com.kouhou.jee.entities.Projection;
-
-public interface ProjectionService {
-
-	public Projection findProjection(Long id);
-	
-	public List<Projection> findByPrice(double prix, int page, int size);
-	
-	public List<Projection> findBydate(Date date, int page, int size);
-	
-	public Projection updateProjection(Long id, Projection projection);
-	
-	public void deleteProjection(Long id);
-
-	public List<Projection> findProjectionsByDate(Date date, Long id_salle,Long id_film);
-
-	public List<Projection> findAll(int page, int limit);
-}
->>>>>>> be89fbdb7b30a47a15d68d0a2dc31901a4e62c48
