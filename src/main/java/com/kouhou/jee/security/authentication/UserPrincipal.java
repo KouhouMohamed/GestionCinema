@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package com.kouhou.jee.security.authentication;
 
 import java.util.ArrayList;
@@ -68,3 +69,75 @@ public class UserPrincipal implements UserDetails{
 	}
 
 }
+=======
+package com.kouhou.jee.security.authentication;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.kouhou.jee.entities.User;
+
+public class UserPrincipal implements UserDetails{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private User user;
+	public UserPrincipal(User user) {
+		this.user = user;
+	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+		user.getRoles().forEach(role->{
+			GrantedAuthority auth = new SimpleGrantedAuthority("ROLE_"+role);
+			grantedAuthorities.add(auth);
+		});
+		return grantedAuthorities;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return user.getPassword();
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return user.getUsername();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return user.isEnabled();
+	}
+
+}
+>>>>>>> be89fbdb7b30a47a15d68d0a2dc31901a4e62c48
